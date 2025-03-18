@@ -1,12 +1,21 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Banner from './components/Banner';
+import Form from './components/Form';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [bannerProps, setBannerProps] = useState({
+    backgroundColor: '#ffffff',
+    text: 'Welcome to My Banner',
+    imageUrl: '',
+  });
+
   return (
     <div className="App">
-      <h1>Interactive Banner</h1>
+      <Banner {...bannerProps} />
+      <Form onUpdateBanner={setBannerProps} />
     </div>
   );
-}
+};
 
 export default App;
