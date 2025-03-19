@@ -8,6 +8,7 @@ const App = () => {
     backgroundColor: '#ffffff',
     text: 'Welcome to My Banner',
     imageUrl: '',
+    textColor: '#000000',
   });
 
   return (
