@@ -1,10 +1,12 @@
 import React from 'react';
 import '../styles/Banner.css';
 
-const Banner = ({ backgroundColor, text, imageUrl, textColor, paragraph, fontFamily, fontSize, fontWeight, textAlign }) => {
+const Banner = ({ backgroundColor, gradient, text, imageUrl, textColor, paragraph, fontFamily, fontSize, fontWeight, textAlign }) => {
   const bannerStyle = {
-    backgroundColor,
-    backgroundImage: `url(${imageUrl})`,
+    background: gradient
+      ? `linear-gradient(${gradient.angle}deg, ${gradient.colors.join(', ')}), url(${imageUrl})`
+      : `url(${imageUrl})`,
+    backgroundColor, // Fallback if no image or gradient is set
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: textColor,

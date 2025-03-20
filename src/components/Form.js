@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import '../styles/Form.css';
 
-const Form = ({ onUpdateBanner }) => {
+const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient }) => {
   const [backgroundColor, setBackgroundColor] = useState('#000000');
   const [text, setText] = useState('Welcome to My Banner');
   const [paragraph, setParagraph] = useState('Discover the wonders of the cosmos and beyond.');
-  const [imageUrl, setImageUrl] = useState('https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
   const [textColor, setTextColor] = useState('#ffffff');
   const [fontFamily, setFontFamily] = useState('Poppins');
   const [fontSize, setFontSize] = useState('3rem');
@@ -52,15 +51,11 @@ const Form = ({ onUpdateBanner }) => {
     },
   };
 
+  // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setImageUrl(event.target.result);
-        onUpdateBanner({ backgroundColor, text, paragraph, imageUrl: event.target.result, textColor, fontFamily, fontSize, fontWeight, textAlign });
-      };
-      reader.readAsDataURL(file);
+      onImageUpload(file);
     }
   };
 
@@ -74,7 +69,6 @@ const Form = ({ onUpdateBanner }) => {
       backgroundColor: selectedTheme.backgroundColor,
       text,
       paragraph,
-      imageUrl,
       textColor: selectedTheme.textColor,
       fontFamily: selectedTheme.fontFamily,
       fontSize,
@@ -103,7 +97,7 @@ const Form = ({ onUpdateBanner }) => {
             value={text}
             onChange={(e) => {
               setText(e.target.value);
-              onUpdateBanner({ backgroundColor, text: e.target.value, paragraph, imageUrl, textColor, fontFamily, fontSize, fontWeight, textAlign });
+              onUpdateBanner({ backgroundColor, text: e.target.value, paragraph, textColor, fontFamily, fontSize, fontWeight, textAlign });
             }}
           />
         </label>
@@ -113,7 +107,7 @@ const Form = ({ onUpdateBanner }) => {
             value={paragraph}
             onChange={(e) => {
               setParagraph(e.target.value);
-              onUpdateBanner({ backgroundColor, text, paragraph: e.target.value, imageUrl, textColor, fontFamily, fontSize, fontWeight, textAlign });
+              onUpdateBanner({ backgroundColor, text, paragraph: e.target.value, textColor, fontFamily, fontSize, fontWeight, textAlign });
             }}
           />
         </label>
@@ -127,7 +121,7 @@ const Form = ({ onUpdateBanner }) => {
             value={fontFamily}
             onChange={(e) => {
               setFontFamily(e.target.value);
-              onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor, fontFamily: e.target.value, fontSize, fontWeight, textAlign });
+              onUpdateBanner({ backgroundColor, text, paragraph, textColor, fontFamily: e.target.value, fontSize, fontWeight, textAlign });
             }}
           >
             {fonts.map((font) => (
@@ -144,7 +138,7 @@ const Form = ({ onUpdateBanner }) => {
             value={fontSize}
             onChange={(e) => {
               setFontSize(e.target.value);
-              onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor, fontFamily, fontSize: e.target.value, fontWeight, textAlign });
+              onUpdateBanner({ backgroundColor, text, paragraph, textColor, fontFamily, fontSize: e.target.value, fontWeight, textAlign });
             }}
           />
         </label>
@@ -154,7 +148,7 @@ const Form = ({ onUpdateBanner }) => {
             value={fontWeight}
             onChange={(e) => {
               setFontWeight(e.target.value);
-              onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor, fontFamily, fontSize, fontWeight: e.target.value, textAlign });
+              onUpdateBanner({ backgroundColor, text, paragraph, textColor, fontFamily, fontSize, fontWeight: e.target.value, textAlign });
             }}
           >
             <option value="normal">Normal</option>
@@ -169,7 +163,7 @@ const Form = ({ onUpdateBanner }) => {
             value={textAlign}
             onChange={(e) => {
               setTextAlign(e.target.value);
-              onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor, fontFamily, fontSize, fontWeight, textAlign: e.target.value });
+              onUpdateBanner({ backgroundColor, text, paragraph, textColor, fontFamily, fontSize, fontWeight, textAlign: e.target.value });
             }}
           >
             <option value="left">Left</option>
@@ -183,15 +177,22 @@ const Form = ({ onUpdateBanner }) => {
       <fieldset>
         <legend>Banner Styling</legend>
         <label>
-          Background Color:
+          Background Image:
           <input
-            type="color"
-            value={backgroundColor}
-            onChange={(e) => {
-              setBackgroundColor(e.target.value);
-              onUpdateBanner({ backgroundColor: e.target.value, text, paragraph, imageUrl, textColor, fontFamily, fontSize, fontWeight, textAlign });
-            }}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
           />
+        </label>
+        <label>
+          Background Type:
+          <select
+            value={useGradient ? 'gradient' : 'solid'}
+            onChange={(e) => toggleBackgroundType(e.target.value === 'gradient')}
+          >
+            <option value="solid">Solid background</option>
+            <option value="gradient">Gradient</option>
+          </select>
         </label>
         <label>
           Text Color:
@@ -200,16 +201,8 @@ const Form = ({ onUpdateBanner }) => {
             value={textColor}
             onChange={(e) => {
               setTextColor(e.target.value);
-              onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor: e.target.value, fontFamily, fontSize, fontWeight, textAlign });
+              onUpdateBanner({ backgroundColor, text, paragraph, textColor: e.target.value, fontFamily, fontSize, fontWeight, textAlign });
             }}
-          />
-        </label>
-        <label>
-          Background Image:
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
           />
         </label>
       </fieldset>
