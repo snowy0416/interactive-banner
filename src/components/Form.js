@@ -14,24 +14,23 @@ const Form = ({ onUpdateBanner }) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         setImageUrl(event.target.result);
+        onUpdateBanner({ backgroundColor, text, paragraph, imageUrl: event.target.result, textColor });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor });
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <label>
         Background Color:
         <input
           type="color"
           value={backgroundColor}
-          onChange={(e) => setBackgroundColor(e.target.value)}
+          onChange={(e) => {
+            setBackgroundColor(e.target.value);
+            onUpdateBanner({ backgroundColor: e.target.value, text, paragraph, imageUrl, textColor });
+          }}
         />
       </label>
       <label>
@@ -39,14 +38,20 @@ const Form = ({ onUpdateBanner }) => {
         <input
           type="text"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+            onUpdateBanner({ backgroundColor, text: e.target.value, paragraph, imageUrl, textColor });
+          }}
         />
       </label>
       <label>
         Paragraph:
         <textarea
           value={paragraph}
-          onChange={(e) => setParagraph(e.target.value)}
+          onChange={(e) => {
+            setParagraph(e.target.value);
+            onUpdateBanner({ backgroundColor, text, paragraph: e.target.value, imageUrl, textColor });
+          }}
         />
       </label>
       <label>
@@ -54,7 +59,10 @@ const Form = ({ onUpdateBanner }) => {
         <input
           type="color"
           value={textColor}
-          onChange={(e) => setTextColor(e.target.value)}
+          onChange={(e) => {
+            setTextColor(e.target.value);
+            onUpdateBanner({ backgroundColor, text, paragraph, imageUrl, textColor: e.target.value });
+          }}
         />
       </label>
       <label>
@@ -65,7 +73,6 @@ const Form = ({ onUpdateBanner }) => {
           onChange={handleImageUpload}
         />
       </label>
-      <button type="submit">Update Banner</button>
     </form>
   );
 };
