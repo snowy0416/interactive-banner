@@ -17,17 +17,20 @@
 }
 
 .banner-text {
-  font-family: 'Poppins', sans-serif; /* Use Google Fonts */
-  font-size: 3rem; /* Large text size */
-  font-weight: bold;
+  font-family: inherit; /* Inherit font family from props */
+  font-size: inherit; /* Inherit font size from props */
+  font-weight: inherit; /* Inherit font weight from props */
+  text-align: inherit; /* Inherit text alignment from props */
   margin: 0 0 20px 0; /* Add spacing below the heading */
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Text shadow for better readability */
   color: inherit; /* Inherit text color from props */
 }
 
 .banner-paragraph {
-  font-family: 'Poppins', sans-serif; /* Use Google Fonts */
-  font-size: 1.2rem; /* Medium text size */
+  font-family: inherit; /* Inherit font family from props */
+  font-size: inherit; /* Inherit font size from props */
+  font-weight: inherit; /* Inherit font weight from props */
+  text-align: inherit; /* Inherit text alignment from props */
   line-height: 1.6; /* Improve readability */
   margin: 0;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* Subtle text shadow */
