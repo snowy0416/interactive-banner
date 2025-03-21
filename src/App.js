@@ -13,7 +13,7 @@ const App = () => {
     gradient: null,
     useGradient: false,
     text: 'Welcome to My Banner',
-    paragraph: 'heyyyyy.',
+    paragraph: 'heyyyyyyyyy.',
     imageUrl: 'https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
     textColor: '#ffffff',
     fontFamily: 'Poppins',
