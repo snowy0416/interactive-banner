@@ -6,7 +6,7 @@ const Banner = ({ backgroundColor, gradient, text, imageUrl, textColor, paragrap
     background: gradient
       ? `linear-gradient(${gradient.angle}deg, ${gradient.colors.join(', ')}), url(${imageUrl})`
       : `url(${imageUrl})`,
-    backgroundColor, // Fallback if no image or gradient is set
+    backgroundColor,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: textColor,

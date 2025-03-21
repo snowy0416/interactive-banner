@@ -4,13 +4,14 @@ import Form from './components/Form';
 import Confetti from 'react-confetti';
 import html2canvas from 'html2canvas';
 import ColorThief from 'colorthief';
+import Swal from 'sweetalert2';
 import './App.css';
 
 const App = () => {
   const savedSettings = JSON.parse(localStorage.getItem('bannerSettings')) || {
-    backgroundColor: '#000000', // Fallback for solid color
-    gradient: null, // Gradient settings
-    useGradient: false, // Toggle between gradient and solid color
+    backgroundColor: '#000000',
+    gradient: null,
+    useGradient: false,
     text: 'Welcome to My Banner',
     paragraph: 'Discover the wonders of the cosmos and beyond.',
     imageUrl: 'https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
@@ -24,35 +25,43 @@ const App = () => {
   const [bannerProps, setBannerProps] = useState(savedSettings);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const bannerRef = useRef(null);
 
-  // Save settings to local storage whenever they change
+  // Save settings to local storage
   useEffect(() => {
     localStorage.setItem('bannerSettings', JSON.stringify(bannerProps));
   }, [bannerProps]);
 
-  // Show confetti for 3 seconds when banner is updated
+  // Save theme preference
   useEffect(() => {
-    if (showConfetti) {
-      const timer = setTimeout(() => {
-        setShowConfetti(false);
-      }, 3000); // Confetti lasts for 3 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [showConfetti]);
+    localStorage.setItem('theme', theme);
+    applyThemeStyles(theme);
+  }, [theme]);
 
-  // Extract colors from the background image and generate a gradient
+  // Apply theme styles
+  const applyThemeStyles = (theme) => {
+    if (theme === 'dark') {
+      document.body.style.backgroundColor = '#1a1a1a';
+      document.body.style.color = '#ffffff';
+    } else {
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#000000';
+    }
+  };
+
+  // Extract colors from the background image
   const extractColorsAndGenerateGradient = (imageUrl) => {
     const img = new Image();
-    img.crossOrigin = 'Anonymous'; // Allow cross-origin images
+    img.crossOrigin = 'Anonymous';
     img.src = imageUrl;
 
     img.onload = () => {
       const colorThief = new ColorThief();
-      const colors = colorThief.getPalette(img, 2); // Extract 2 dominant colors
+      const colors = colorThief.getPalette(img, 2);
       const gradient = {
-        angle: 90, // Default angle
-        colors: colors.map((color) => `rgba(${color.join(', ')}, 0.5)`), // Convert to RGBA with 50% opacity
+        angle: 90,
+        colors: colors.map((color) => `rgba(${color.join(', ')}, 0.5)`),
       };
       setBannerProps((prevProps) => ({
         ...prevProps,
@@ -74,7 +83,7 @@ const App = () => {
       setBannerProps((prevProps) => ({
         ...prevProps,
         imageUrl,
-        gradient: null, // Clear gradient when a new image is uploaded
+        gradient: null,
       }));
     };
     reader.readAsDataURL(file);
@@ -85,41 +94,76 @@ const App = () => {
     setBannerProps((prevProps) => ({
       ...prevProps,
       useGradient,
-      gradient: useGradient && prevProps.imageUrl ? prevProps.gradient : null, // Only keep gradient if useGradient is true and an image is uploaded
+      gradient: useGradient && prevProps.imageUrl ? prevProps.gradient : null,
     }));
 
-    // Extract gradient if useGradient is true and an image is uploaded
     if (useGradient && bannerProps.imageUrl) {
       extractColorsAndGenerateGradient(bannerProps.imageUrl);
     }
   };
 
-  // Download the banner as an image
+  // Download the banner
   const downloadBanner = () => {
-    if (bannerRef.current) {
-      html2canvas(bannerRef.current, {
-        useCORS: true, // Enable cross-origin resource sharing
-        imageTimeout: 15000, // Wait up to 15 seconds for images to load
-        logging: true, // Enable logging for debugging
-      }).then((canvas) => {
-        const link = document.createElement('a');
-        link.download = 'banner.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to download the banner?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#007bff',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, download it!',
+      cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (bannerRef.current) {
+          html2canvas(bannerRef.current, {
+            useCORS: true,
+            imageTimeout: 15000,
+            logging: true,
+          }).then((canvas) => {
+            const link = document.createElement('a');
+            link.download = 'banner.png';
+            link.href = canvas.toDataURL();
+            link.click();
+          });
+        }
+      }
+    });
+  };
+
+  // Toggle between dark and light themes
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <div className="App">
+    <div className={`App ${theme}`}>
       {showConfetti && <Confetti />}
+      <div className="header">
+        <h1>Banner Creator</h1>
+        <div className="theme-toggle">
+          <input
+            type="checkbox"
+            id="theme-switch"
+            checked={theme === 'dark'}
+            onChange={toggleTheme}
+          />
+          <label htmlFor="theme-switch" className="theme-switch-label">
+            <span className="sun">☀️</span>
+            <span className="moon">🌙</span>
+          </label>
+        </div>
+      </div>
       <div ref={bannerRef}>
         <Banner {...bannerProps} />
       </div>
       <Form
         onUpdateBanner={(newProps) => {
-          setBannerProps(newProps);
-          setShowConfetti(true); // Trigger confetti
+          setBannerProps((prevProps) => ({
+            ...prevProps,
+            ...newProps,
+          }));
+          setShowConfetti(true);
         }}
         onImageUpload={handleImageUpload}
         toggleBackgroundType={toggleBackgroundType}
@@ -133,11 +177,13 @@ const App = () => {
       {showPreview && (
         <div className="preview-modal">
           <div className="preview-content">
+            <button className="close-button" onClick={() => setShowPreview(false)}>
+              &times;
+            </button>
             <h2>Banner Preview</h2>
             <Banner {...bannerProps} />
             <div className="preview-actions">
               <button onClick={downloadBanner}>Download Banner</button>
-              <button onClick={() => setShowPreview(false)}>Reupdate Banner</button>
             </div>
           </div>
         </div>
