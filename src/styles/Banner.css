@@ -1,44 +1,72 @@
+/* Using Wikimedia Design Tokens */
 .banner {
+  --banner-radius: 2px; /* Wikimedia standard border radius */
+  --banner-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); /* Wikimedia shadow */
+
   width: 100%;
-  height: 300px; /* Updated height */
+  min-height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--banner-bg-color);
   background-size: cover;
   background-position: center;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.banner:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background-repeat: no-repeat;
+  margin: var(--wm-spacing-xl) 0;
+  border-radius: var(--banner-radius);
+  box-shadow: var(--banner-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
 .banner-overlay {
-  padding: 20px;
-  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  padding: var(--wm-spacing-xl);
   text-align: center;
-  max-width: 800px;
+  max-width: 900px;
+  width: 90%;
 }
 
 .banner-text {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  text-align: inherit;
-  margin: 0 0 20px 0;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-  color: inherit;
+  font-family: var(--banner-font-family);
+  font-size: var(--banner-font-size);
+  font-weight: var(--banner-font-weight);
+  color: var(--banner-text-color);
+  margin: 0 0 var(--wm-spacing-md) 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  line-height: 1.25;
 }
 
 .banner-paragraph {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  text-align: inherit;
-  line-height: 1.6;
-  margin: 0;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-  color: inherit;
+  font-family: var(--banner-font-family);
+  font-size: var(--wm-font-size-medium);
+  color: var(--banner-text-color);
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 700px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Dark mode adaptation */
+@media (prefers-color-scheme: dark) {
+  .banner {
+    --banner-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .banner {
+    min-height: 250px;
+    margin: var(--wm-spacing-lg) 0;
+  }
+  
+  .banner-overlay {
+    padding: var(--wm-spacing-lg);
+  }
+  
+  .banner-text {
+    font-size: var(--wm-font-size-large);
+  }
 }

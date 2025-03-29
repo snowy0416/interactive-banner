@@ -1,29 +1,35 @@
 import React from 'react';
 import '../styles/Banner.css';
+import { designTokens } from '../design-tokens';
 
-const Banner = ({ backgroundColor, gradient, text, imageUrl, textColor, paragraph, fontFamily, fontSize, fontWeight, textAlign }) => {
+const Banner = ({ 
+  backgroundColor = designTokens.colors.primary, 
+  gradient, 
+  text, 
+  imageUrl, 
+  textColor = designTokens.colors.textLight, 
+  paragraph, 
+  fontFamily = designTokens.fonts.primary, 
+  fontSize = designTokens.fonts.sizes.xlarge,
+  fontWeight = 'bold', 
+  textAlign = 'center' 
+}) => {
   const bannerStyle = {
+    '--banner-bg-color': backgroundColor,
+    '--banner-text-color': textColor,
+    '--banner-font-family': fontFamily,
+    '--banner-font-size': fontSize,
+    '--banner-font-weight': fontWeight,
     background: gradient
       ? `linear-gradient(${gradient.angle}deg, ${gradient.colors.join(', ')}), url(${imageUrl})`
-      : `url(${imageUrl})`,
-    backgroundColor,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    color: textColor,
-  };
-
-  const textStyle = {
-    fontFamily,
-    fontSize,
-    fontWeight,
-    textAlign,
+      : `url(${imageUrl})`
   };
 
   return (
     <div className="banner" style={bannerStyle}>
       <div className="banner-overlay">
-        <h1 className="banner-text" style={textStyle}>{text}</h1>
-        <p className="banner-paragraph" style={textStyle}>{paragraph}</p>
+        <h1 className="banner-text">{text}</h1>
+        {paragraph && <p className="banner-paragraph">{paragraph}</p>}
       </div>
     </div>
   );

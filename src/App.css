@@ -1,40 +1,37 @@
-/* General Styles */
+/* ===== BASE STYLES ===== */
 .App {
   text-align: center;
   padding: 20px;
   font-family: 'Poppins', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
 }
 
-/* Light Theme */
 .App.light {
   background-color: #ffffff;
   color: #000000;
 }
 
-/* Dark Theme */
 .App.dark {
   background-color: #1a1a1a;
   color: #ffffff;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: var(--header-bg);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
   margin: 0;
   font-size: 24px;
-  color: var(--text-color);
 }
 
-/* Theme Toggle */
+/* ===== THEME TOGGLE ===== */
 .theme-toggle {
   position: relative;
 }
@@ -43,13 +40,21 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  background-color: #333;
   border-radius: 50px;
   padding: 5px;
   width: 60px;
   height: 30px;
   position: relative;
   transition: background-color 0.3s ease;
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1),
+             -3px -3px 6px rgba(255, 255, 255, 0.8);
+}
+
+.App.dark .theme-switch-label {
+  background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3),
+             -3px -3px 6px rgba(255, 255, 255, 0.05);
 }
 
 .theme-switch-label .sun,
@@ -87,7 +92,7 @@
   display: none;
 }
 
-/* Banner Preview */
+/* ===== BANNER ===== */
 .banner {
   width: 100%;
   height: 350px;
@@ -99,59 +104,81 @@
   margin-bottom: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
 
 .banner:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Form */
+/* ===== FORM ===== */
 form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   padding: 20px;
-  background-color: var(--form-bg);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  margin: 2rem 0;
+}
+
+.App.dark form {
+  background: rgba(30, 30, 30, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 label {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  font-weight: 500;
 }
 
 input, select, textarea {
-  padding: 8px;
+  padding: 12px 5px;
   font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(11, 11, 11, 0.15);
+  border-radius: 12px;
   width: 100%;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.App.dark input,
+.App.dark select,
+.App.dark textarea {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 input:focus, select:focus, textarea:focus {
+  outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 button {
-  padding: 10px;
+  padding: 12px 24px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  grid-column: span 2;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-/* Preview Modal */
+/* ===== MODAL ===== */
 .preview-modal {
   position: fixed;
   top: 0;
@@ -169,7 +196,6 @@ button:hover {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  text-align: center;
   max-width: 90%;
   max-height: 90%;
   overflow: auto;
@@ -187,21 +213,6 @@ button:hover {
   margin-top: 20px;
 }
 
-.preview-actions button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.preview-actions button:hover {
-  background-color: #0056b3;
-}
-
-/* Close Button */
 .close-button {
   position: absolute;
   top: 10px;
@@ -210,11 +221,124 @@ button:hover {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #333;
   padding: 5px;
-  line-height: 1;
 }
 
-.close-button:hover {
-  color: #000;
+/* ===== CONFETTI ===== */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+  
+  textarea, button {
+    grid-column: span 1;
+  }
+}
+
+/* ===== BANNER STYLES ===== */
+.banner {
+  width: 100%;
+  min-height: 350px; /* Changed from fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 2rem auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-width: 1200px; /* Added max-width for better large screen display */
+}
+
+/* Gradient overlay for better text readability */
+.banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  z-index: 1;
+}
+
+/* Content container */
+.banner-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+/* Text styles */
+.banner h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.banner p {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Hover effects */
+.banner:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .banner {
+    min-height: 250px;
+    margin: 1rem auto;
+  }
+  
+  .banner h2 {
+    font-size: 2rem;
+  }
+  
+  .banner p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    min-height: 200px;
+    border-radius: 0;
+  }
+  
+  .banner-content {
+    padding: 1rem;
+  }
+  
+  .banner h2 {
+    font-size: 1.5rem;
+  }
 }

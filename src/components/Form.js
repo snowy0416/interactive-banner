@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import '../styles/Form.css';
 
 const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient }) => {
-  const [text, setText] = useState('Welcome to My Banner');
-  const [paragraph, setParagraph] = useState('Discover the wonders of the cosmos and beyond.');
-  const [textColor, setTextColor] = useState('#ffffff');
-  const [fontFamily, setFontFamily] = useState('Poppins');
-  const [fontSize, setFontSize] = useState('3rem');
-  const [fontWeight, setFontWeight] = useState('bold');
-  const [textAlign, setTextAlign] = useState('center');
+  const [formState, setFormState] = useState({
+    text: 'Welcome to My Banner',
+    paragraph: 'Discover the wonders of the cosmos and beyond.',
+    textColor: '#ffffff',
+    fontFamily: 'Poppins',
+    fontSize: '3rem',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  });
 
   const fonts = [
     'Poppins',
@@ -21,37 +23,39 @@ const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient
     'Playfair Display',
   ];
 
-  // Handle image upload
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    onUpdateBanner({ [name]: value });
+  };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      onImageUpload(file);
-    }
+    if (file) onImageUpload(file);
   };
 
   return (
-    <form>
+    <form className="banner-form">
       <fieldset>
         <legend>Banner Content</legend>
         <label>
           Banner Text:
           <input
             type="text"
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              onUpdateBanner({ text: e.target.value, paragraph, textColor, fontFamily, fontSize, fontWeight, textAlign });
-            }}
+            name="text"
+            value={formState.text}
+            onChange={handleChange}
           />
         </label>
         <label>
           Paragraph:
           <textarea
-            value={paragraph}
-            onChange={(e) => {
-              setParagraph(e.target.value);
-              onUpdateBanner({ text, paragraph: e.target.value, textColor, fontFamily, fontSize, fontWeight, textAlign });
-            }}
+            name="paragraph"
+            value={formState.paragraph}
+            onChange={handleChange}
           />
         </label>
       </fieldset>
@@ -61,16 +65,12 @@ const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient
         <label>
           Font Family:
           <select
-            value={fontFamily}
-            onChange={(e) => {
-              setFontFamily(e.target.value);
-              onUpdateBanner({ text, paragraph, textColor, fontFamily: e.target.value, fontSize, fontWeight, textAlign });
-            }}
+            name="fontFamily"
+            value={formState.fontFamily}
+            onChange={handleChange}
           >
             {fonts.map((font) => (
-              <option key={font} value={font}>
-                {font}
-              </option>
+              <option key={font} value={font}>{font}</option>
             ))}
           </select>
         </label>
@@ -78,21 +78,17 @@ const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient
           Font Size:
           <input
             type="text"
-            value={fontSize}
-            onChange={(e) => {
-              setFontSize(e.target.value);
-              onUpdateBanner({ text, paragraph, textColor, fontFamily, fontSize: e.target.value, fontWeight, textAlign });
-            }}
+            name="fontSize"
+            value={formState.fontSize}
+            onChange={handleChange}
           />
         </label>
         <label>
           Font Weight:
           <select
-            value={fontWeight}
-            onChange={(e) => {
-              setFontWeight(e.target.value);
-              onUpdateBanner({ text, paragraph, textColor, fontFamily, fontSize, fontWeight: e.target.value, textAlign });
-            }}
+            name="fontWeight"
+            value={formState.fontWeight}
+            onChange={handleChange}
           >
             <option value="normal">Normal</option>
             <option value="bold">Bold</option>
@@ -103,11 +99,9 @@ const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient
         <label>
           Text Alignment:
           <select
-            value={textAlign}
-            onChange={(e) => {
-              setTextAlign(e.target.value);
-              onUpdateBanner({ text, paragraph, textColor, fontFamily, fontSize, fontWeight, textAlign: e.target.value });
-            }}
+            name="textAlign"
+            value={formState.textAlign}
+            onChange={handleChange}
           >
             <option value="left">Left</option>
             <option value="center">Center</option>
@@ -141,11 +135,9 @@ const Form = ({ onUpdateBanner, onImageUpload, toggleBackgroundType, useGradient
           Text Color:
           <input
             type="color"
-            value={textColor}
-            onChange={(e) => {
-              setTextColor(e.target.value);
-              onUpdateBanner({ text, paragraph, textColor: e.target.value, fontFamily, fontSize, fontWeight, textAlign });
-            }}
+            name="textColor"
+            value={formState.textColor}
+            onChange={handleChange}
           />
         </label>
       </fieldset>
