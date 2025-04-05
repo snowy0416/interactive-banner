@@ -80,8 +80,19 @@ const App = () => {
 
     img.onerror = (error) => {
       console.error('Error loading image:', error);
-      Swal.fire('Error', 'Failed to load the background image. Please check the image URL.', 'error');
+      showAlert('Error', 'Failed to load the background image. Please check the image URL.', 'error');
     };
+  };
+
+  const showAlert = (title, text, icon) => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      background: theme === 'dark' ? designTokens.colors.bgDark : designTokens.colors.bgLight,
+      color: theme === 'dark' ? designTokens.colors.textLight : designTokens.colors.textDark,
+      confirmButtonColor: designTokens.colors.primary,
+    });
   };
 
   const handleImageUpload = (file) => {
@@ -115,10 +126,19 @@ const App = () => {
       text: 'Do you want to download the banner?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: 'var(--primary)',
-      cancelButtonColor: 'var(--error)',
+      confirmButtonColor: designTokens.colors.primary,
+      cancelButtonColor: designTokens.colors.error,
       confirmButtonText: 'Yes, download it!',
       cancelButtonText: 'No, cancel!',
+      background: theme === 'dark' ? designTokens.colors.bgDark : designTokens.colors.bgLight,
+      color: theme === 'dark' ? designTokens.colors.textLight : designTokens.colors.textDark,
+      customClass: {
+        popup: 'swal-popup',
+        title: 'swal-title',
+        content: 'swal-text',
+        confirmButton: 'swal-confirm-button',
+        cancelButton: 'swal-cancel-button'
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         if (bannerRef.current) {
@@ -134,11 +154,16 @@ const App = () => {
             
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 5000);
+            
+            // Show success message
+            showAlert('Success!', 'Your banner has been downloaded.', 'success');
           }).catch(error => {
             console.error('Error generating banner:', error);
-            Swal.fire('Error', 'Failed to generate the banner. Please try again.', 'error');
+            showAlert('Error', 'Failed to generate the banner. Please try again.', 'error');
           });
         }
+      } else {
+        showAlert('Cancelled', 'Your banner was not downloaded.', 'info');
       }
     });
   };
@@ -163,7 +188,14 @@ const App = () => {
         )}
         
         <div className="header">
-          <h1>Banner Creator</h1>
+        <div className="logo-container">
+        <img 
+         src="logo.png"  // Make sure this matches your logo filename in public folder
+         alt="Bannrx Logo" 
+         className="logo"
+        />
+        <h1>Bannrx</h1>
+         </div>
           <div className="theme-toggle">
             <input
               type="checkbox"
@@ -195,7 +227,12 @@ const App = () => {
         />
         
         <div className="actions">
-          <button onClick={() => setShowPreview(true)}>Preview Banner</button>
+          <button 
+            className="preview-button"
+            onClick={() => setShowPreview(true)}
+          >
+            Preview Banner
+          </button>
         </div>
 
         {showPreview && (
@@ -211,7 +248,12 @@ const App = () => {
               <h2>Banner Preview</h2>
               <Banner {...bannerProps} />
               <div className="preview-actions">
-                <button onClick={downloadBanner}>Download Banner</button>
+                <button 
+                  className="download-button"
+                  onClick={downloadBanner}
+                >
+                  Download Banner
+                </button>
               </div>
             </div>
           </div>

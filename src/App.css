@@ -18,18 +18,39 @@
 }
 
 /* ===== HEADER ===== */
+/* Header Styles */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 2rem;
+  background: var(--bg-light);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.App.dark .header {
+  background: var(--bg-dark);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
 }
+
 
 /* ===== THEME TOGGLE ===== */
 .theme-toggle {
@@ -202,8 +223,14 @@ button:hover {
   position: relative;
 }
 
+.App.dark .preview-content {
+  background-color: #1a1a1a;
+  color: white;
+}
+
 .preview-content h2 {
   margin-bottom: 20px;
+  color: inherit;
 }
 
 .preview-actions {
@@ -222,6 +249,56 @@ button:hover {
   font-size: 24px;
   cursor: pointer;
   padding: 5px;
+  color: #333;
+}
+
+.App.dark .close-button {
+  color: white;
+}
+
+/* Confirmation message styles */
+.confirmation-message {
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+  background-color: rgba(54, 204, 255, 0.1); /* designTokens.primary */
+  border: 1px solid #36c; /* designTokens.primary */
+  color: #333;
+}
+
+.App.dark .confirmation-message {
+  background-color: rgba(42, 75, 141, 0.2); /* designTokens.primaryDark */
+  border-color: #2a4b8d; /* designTokens.primaryDark */
+  color: white;
+}
+
+/* Download button styles */
+.download-btn {
+  background-color: #36c;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+  background-color: #2a4b8d; 
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .preview-content {
+    padding: 15px;
+  }
+  
+  .close-button {
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+  }
 }
 
 /* ===== CONFETTI ===== */
